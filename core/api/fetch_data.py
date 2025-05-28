@@ -1,8 +1,13 @@
 import requests
-from core.config import Settings
+from core.config import Settings, DatabaseConnection
 from datetime import datetime, timedelta
+from core.database.database_operations import Purchases
+import sys
+import os
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 settings = Settings()
+db_connection = DatabaseConnection.get_instance()
 
 
 class APIClient:
@@ -34,7 +39,7 @@ class APIClient:
 
 def generate_date_list() -> list:
     """
-    Генерация списка дат с 2023-01-01 по настоящее время
+    Генерация списка дат с 2023-01-01 по вчерашнюю дату
     :return: список дат
     """
     start_date = datetime.today().strftime("2023-01-01")
@@ -43,14 +48,33 @@ def generate_date_list() -> list:
 
     return [
         (start + timedelta(days=i)).strftime("%Y-%m-%d")
-        for i in range((today - start).days + 1)
+        for i in range((today - start).days)
     ]
 
 
-if __name__ == "__main__":
+def filling_historical_data():
+    purchases = Purchases(db_connection)
     client = APIClient()
     dates = generate_date_list()
     for date_str in dates:
         params = {"date": date_str}
         data = client.fetch_data("data", param=params)
-        print(data)
+        for record in data:
+            gender_id = purchases.get_gender_id(gender=record["gender"])
+            purchases.insert_stock(
+                client_id=record["client_id"],
+                gender_id=gender_id,
+                purchase_datetime=record["purchase_datetime"],
+                purchase_time_as_seconds_from_midnight=record[
+                    "purchase_time_as_seconds_from_midnight"
+                ],
+                product_id=record["product_id"],
+                quantity=record["quantity"],
+                price_per_item=record["price_per_item"],
+                discount_per_item=record["discount_per_item"],
+                total_price=record["total_price"],
+            )
+
+
+if __name__ == "__main__":
+    filling_historical_data()

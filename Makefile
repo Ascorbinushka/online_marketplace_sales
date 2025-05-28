@@ -11,4 +11,4 @@ down-services:
 
 
 gener-data:
-	python core/api/fetch_data.py
+	python -m core.api.fetch_data
