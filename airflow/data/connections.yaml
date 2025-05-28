@@ -1,0 +1,7 @@
+postgres:
+  conn_type: postgres
+  host: pg
+  schema: postgres
+  login: postgres
+  password: postgres
+  port: 5432
