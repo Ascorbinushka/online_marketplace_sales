@@ -15,4 +15,4 @@ down-af:
 	docker-compose -f docker-compose.yaml down
 
 gener-data:
-	python -m core.api.fetch_data
+	python -m airflow.dags.core.api.fetch_data

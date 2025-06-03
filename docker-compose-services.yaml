@@ -5,7 +5,7 @@ services:
     image: postgres:latest
     container_name: pg
     env_file:
-      - ./.env
+      - .env
     environment:
       - POSTGRES_PASSWORD=${PG_PASSWORD}
       - POSTGRES_USER=${PG_USER}
