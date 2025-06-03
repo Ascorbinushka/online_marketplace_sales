@@ -32,3 +32,11 @@ make up-af
 ```
 make down-af
 ```
+### Развернуть Metabase
+```
+make up-af
+```
+### Остановить контейнер с Metabase
+```
+make down-af
+```

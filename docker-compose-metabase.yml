@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:13.1-alpine
+    restart: always
+    volumes:
+      - db-data:${DB_DATA_DIR}
+    environment:
+      - PGDATA=${DB_DATA_DIR}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+
+  metabase:
+    image: metabase/metabase:latest
+    restart: always
+    environment:
+      MB_DB_TYPE: "postgres"
+      MB_DB_DBNAME: "${DB_NAME}"
+      MB_DB_PORT: "5432"
+      MB_DB_USER: "${DB_USER}"
+      MB_DB_PASS: "${DB_PASSWORD}"
+      MB_DB_HOST: "db"  #  Имя сервиса PostgreSQL (важно!)
+      MB_PASSWORD_COMPLEXITY: strong
+      MB_PASSWORD_LENGTH: 10
+      JAVA_TIMEZONE: "${MB_JAVA_TIMEZONE}"
+    ports:
+      - "127.0.0.1:${MB_PORT}:3000" # Упрощаем для локального доступа
+    depends_on:
+      - db
+
+volumes:
+  db-data:
