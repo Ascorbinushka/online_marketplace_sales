@@ -34,11 +34,11 @@ make down-af
 ```
 ### Развернуть Metabase
 ```
-make up-af
+make up-mb
 ```
 ### Остановить контейнер с Metabase
 ```
-make down-af
+make down-mb
 ```
 ### Структура базы данных о покупках 
 
