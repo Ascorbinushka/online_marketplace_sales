@@ -41,8 +41,7 @@ def load_data_to_pg(data):
 
 def main():
     data = get_data_sales()
-    # load_data_to_pg(data)
-    print(data)
+    load_data_to_pg(data)
 
 
 if __name__ == "__main__":
