@@ -20,4 +20,10 @@ CREATE TABLE purchases (
 CREATE UNIQUE INDEX IF NOT EXISTS idx_purchases_client_product_purchase
 ON purchases (client_id, product_id, purchase_datetime);
 
+CREATE INDEX idx_purchases_client_id ON public.purchases USING btree (client_id);
+
+CREATE INDEX idx_purchases_purchase_datetime ON public.purchases USING btree (purchase_datetime);
+
+CREATE UNIQUE INDEX purchases_pkey ON public.purchases USING btree (purchase_id);
+
 INSERT INTO genders (gender) VALUES ('F'), ('M');
